@@ -52,7 +52,7 @@ public class MobileContact extends AbstractEntity {
 //        if (!(other instanceof MobileContact)) return false;
 //        MobileContact that = (MobileContact) other;
 
-        // In Java 17 το παρακάτω κάνει δύο πράγματα
+        // In Java 17 το παρακάτω κάνει δύο πράγματα.
         // Έλεγχο αν είναι instanceof και αν ναι μετά κάνει
         // typecast (όπως κάναμε πριν τη Java 17 με τον παραπάνω κώδικα)
         if (!(other instanceof MobileContact that)) return false;
