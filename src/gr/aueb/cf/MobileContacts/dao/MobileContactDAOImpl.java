@@ -52,12 +52,14 @@ public class MobileContactDAOImpl implements IMobileContactDAO{
 
     @Override
     public boolean userIdExists(Long id) {
-        return false;
+        int position = getIndexById(id);
+        return position != -1;
     }
 
     @Override
     public boolean phoneNumberExists(String phoneNumber) {
-        return false;
+        int position = getIndexByPhoneNumber(phoneNumber);
+        return position != -1;
     }
 
     private int getIndexById(long id) {
