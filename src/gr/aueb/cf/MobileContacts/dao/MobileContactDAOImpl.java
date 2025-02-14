@@ -46,7 +46,8 @@ public class MobileContactDAOImpl implements IMobileContactDAO{
 
     @Override
     public MobileContact getByPhoneNumber(String phoneNumber) {
-        return null;
+        int positionToReturn = getIndexByPhoneNumber(phoneNumber);
+        return (positionToReturn != -1) ? contacts.get(positionToReturn) : null;
     }
 
     @Override
@@ -64,6 +65,18 @@ public class MobileContactDAOImpl implements IMobileContactDAO{
 
         for (int i = 0; i < contacts.size(); i++) {
             if (contacts.get(i).getId().equals(id)) {
+                positionToReturn = i;
+                break;
+            }
+        }
+        return positionToReturn;
+    }
+
+    private int getIndexByPhoneNumber(String phoneNumber) {
+        int positionToReturn = -1;
+
+        for (int i = 0; i < contacts.size(); i++) {
+            if (contacts.get(i).getPhoneNumber().equals(phoneNumber)) {
                 positionToReturn = i;
                 break;
             }
