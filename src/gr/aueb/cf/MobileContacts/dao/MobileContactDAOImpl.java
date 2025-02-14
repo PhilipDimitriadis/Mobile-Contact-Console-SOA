@@ -24,22 +24,24 @@ public class MobileContactDAOImpl implements IMobileContactDAO{
 
     @Override
     public void deleteById(Long id) {
-
+        //contacts.remove(getIndexById(id));
+        contacts.removeIf(contact -> contact.getId().equals(id));
     }
 
     @Override
     public MobileContact getById(Long id) {
-        return null;
+        int positionToReturn = getIndexById(id);
+        return (positionToReturn != -1) ? contacts.get(positionToReturn) : null;
     }
 
     @Override
     public List<MobileContact> getAll() {
-        return List.of();
+        return new ArrayList<>(contacts);
     }
 
     @Override
     public void deleteByPhoneNumber(String phoneNumber) {
-
+        contacts.removeIf(contact -> contact.getPhoneNumber().equals(phoneNumber));
     }
 
     @Override
