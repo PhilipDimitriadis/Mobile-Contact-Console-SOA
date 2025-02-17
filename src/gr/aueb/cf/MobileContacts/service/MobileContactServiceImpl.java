@@ -27,10 +27,10 @@ public class MobileContactServiceImpl implements IMobileContactService {
             }
             mobileContact = mapInsertDTOToContact(dto);
 
-            System.err.printf("MobileContactServiceImpl Logger: %s was inserted", mobileContact);
+            System.err.printf("MobileContactServiceImpl Logger: %s was inserted\n", mobileContact);
             return dao.insert(mobileContact);
         } catch (PhoneNumberAlreadyExistsException e) {
-            System.err.printf("MobileContactServiceImpl Logger: contact with phone number: %s already exists", dto.getPhoneNumber());
+            System.err.printf("MobileContactServiceImpl Logger: contact with phone number: %s already exists\n", dto.getPhoneNumber());
             throw e;
         }
     }
@@ -54,10 +54,10 @@ public class MobileContactServiceImpl implements IMobileContactService {
             }
 
             newContact = mapUpdateDTOToContact(dto);
-            System.err.printf("MobileContactServiceImpl Logger: %s was updated with new info: %s", mobileContact, newContact);
+            System.err.printf("MobileContactServiceImpl Logger: %s was updated with new info: %s\n", mobileContact, newContact);
             return dao.update(dto.getId(), newContact);
         } catch (ContactNotFoundException | PhoneNumberAlreadyExistsException e) {
-            System.err.println("MobileContactServiceImpl Logger: " + e.getMessage());
+            System.err.printf("MobileContactServiceImpl Logger: %s\n", e.getMessage());
             throw e;
         }
     }
@@ -69,17 +69,28 @@ public class MobileContactServiceImpl implements IMobileContactService {
                 throw new ContactNotFoundException("Contact with id: " + id + " not found to delete");
             }
 
-            System.err.printf("MobileContactServiceImpl Logger: contact with id: %s was deleted", id);
+            System.err.printf("MobileContactServiceImpl Logger: contact with id: %d was deleted\n", id);
             dao.deleteById(id);
         } catch (ContactNotFoundException e) {
-            System.err.printf("MobileContactServiceImpl Logger: " + e.getMessage());
+            System.err.printf("MobileContactServiceImpl Logger: %s\n", e.getMessage());
             throw e;
         }
     }
 
     @Override
     public MobileContact getContactById(Long id) throws ContactNotFoundException {
-        return null;
+        MobileContact mobileContact;
+
+        try {
+            mobileContact = dao.getById(id);
+            if (mobileContact == null) {
+                throw new ContactNotFoundException("Contact with id: " + id + " not found");
+            }
+            return mobileContact;
+        } catch (ContactNotFoundException e) {
+            System.err.printf("Contact with id: %d was not found to get return\n", id);
+            throw e;
+        }
     }
 
     @Override
