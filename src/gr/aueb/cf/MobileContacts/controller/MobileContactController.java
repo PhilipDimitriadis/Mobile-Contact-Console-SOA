@@ -14,6 +14,9 @@ import gr.aueb.cf.MobileContacts.service.IMobileContactService;
 import gr.aueb.cf.MobileContacts.service.MobileContactServiceImpl;
 import gr.aueb.cf.MobileContacts.validation.ValidationUtil;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MobileContactController {
 
     private final IMobileContactDAO dao = new MobileContactDAOImpl();
@@ -60,5 +63,41 @@ public class MobileContactController {
         } catch (ContactNotFoundException e) {
             return "Error\n" + e.getMessage() +"\n";
         }
+    }
+
+    public String deleteContactById(Long id) {
+        try {
+            service.deleteContactById(id);
+            return "OK\n Η επαφή διαγράφηκε";
+        } catch (ContactNotFoundException e) {
+            return "Error\n Λάθος κατά την διαγραφή. Η επαφή δεν βρέθηκε";
+        }
+    }
+
+    public String getContactById(Long id) {
+        MobileContact mobileContact;
+        MobileContactReadOnlyDTO  readOnlyDTO;
+        try {
+            mobileContact = service.getContactById(id);
+            readOnlyDTO = Mapper.mapMobileContactToDTO(mobileContact);
+            return "OK\n" + Serializer.serializeDTO(readOnlyDTO);
+        } catch (ContactNotFoundException e) {
+            return "Error. /n Η επαφή δεν βρέθηκε \n";
+        }
+    }
+
+    public List<String> getAllContacts() {
+        List<MobileContact> contacts;
+        List<String> serializedList = new ArrayList<>();
+        MobileContactReadOnlyDTO readOnlyDTO;
+        String serialized;
+
+        contacts = service.getAllContacts();
+        for (MobileContact contact : contacts) {
+            readOnlyDTO = Mapper.mapMobileContactToDTO(contact);
+            serialized = Serializer.serializeDTO(readOnlyDTO);
+            serializedList.add(serialized);
+        }
+        return serializedList;
     }
 }
